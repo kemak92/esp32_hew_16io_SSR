@@ -1,0 +1,385 @@
+esphome:
+  name: esp32eth_2
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+ethernet:
+  type: LAN8720
+  mdc_pin: GPIO23
+  mdio_pin: GPIO18
+  clk_mode: GPIO17_OUT
+  phy_addr: 0
+
+  # Optional manual IP
+  # Optional manual IP
+  manual_ip:
+    static_ip: 192.168.1.200
+    gateway: 192.168.1.1
+    subnet: 255.255.255.0  
+
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  # reboot_timeout: 0
+ota:
+
+web_server:
+  port: 80
+  auth:
+    username: heung
+    password: 883740Zz
+# Example configuration entry for ESP32
+i2c:
+  sda: 5
+  scl: 16
+  scan: true
+  id: bus_a
+
+# Example configuration entry
+pcf8574:
+  - id: 'pcf8574_hub_out_1'  # for output channel 1-16
+    i2c_id: bus_a
+    address: 0x27
+    pcf8575: true
+  - id: 'pcf8574_hub_in_1'  # for output channel 1-16
+    i2c_id: bus_a
+    address: 0x20
+    pcf8575: true
+# Individual outputs
+# Individual outputs
+switch:
+ # - platform: gpio
+  #  name: "Đèn tóc "
+  #  pin: GPIO15
+   # id: den
+
+  - platform: gpio
+    name: "ETH32--light1"
+    id: LT1
+    pin:
+      pcf8574: pcf8574_hub_out_1
+      number: 8
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    name: "ETH32--light2"
+    id: LT2
+    pin:
+      pcf8574: pcf8574_hub_out_1
+      number: 9
+      mode: OUTPUT
+      inverted: true
+
+  - platform: gpio
+    name: "ETH32--light3"
+    id: LT3
+    pin:
+      pcf8574: pcf8574_hub_out_1
+      number: 10
+      mode: OUTPUT
+      inverted: true
+  - platform: gpio
+    name: "ETH32--light4"
+    id: LT4
+    pin:
+      pcf8574: pcf8574_hub_out_1
+      number: 11
+      mode: OUTPUT
+      inverted: true
+  - platform: gpio
+    name: "ETH32--light5"
+    id: LT5
+    pin:
+      pcf8574: pcf8574_hub_out_1
+      number: 12
+      mode: OUTPUT
+      inverted: true
+  - platform: gpio
+    name: "ETH32--light6"
+    id: LT6
+    pin:
+      pcf8574: pcf8574_hub_out_1
+      number: 13
+      mode: OUTPUT
+      inverted: true
+  - platform: gpio
+    name: "ETH32--light7"
+    id: LT7
+    pin:
+      pcf8574: pcf8574_hub_out_1
+      number: 14
+      mode: OUTPUT
+      inverted: true
+  - platform: gpio
+    name: "ETH32--light8"
+    id: LT8
+    pin:
+      pcf8574: pcf8574_hub_out_1
+      number: 15
+      mode: OUTPUT
+      inverted: true
+  - platform: gpio
+    name: "ETH32--light9"
+    id: LT9
+    pin:
+      pcf8574: pcf8574_hub_out_1
+      number: 0
+      mode: OUTPUT
+      inverted: true
+  - platform: gpio
+    name: "ETH32--light10"
+    id: LT10
+    pin:
+      pcf8574: pcf8574_hub_out_1
+      number: 1
+      mode: OUTPUT
+      inverted: true
+  - platform: gpio
+    name: "ETH32--light11"
+    id: LT11
+    pin:
+      pcf8574: pcf8574_hub_out_1
+      number: 2
+      mode: OUTPUT
+      inverted: true
+  - platform: gpio
+    name: "ETH32--light12"
+    id: LT12
+    pin:
+      pcf8574: pcf8574_hub_out_1
+      number: 3
+      mode: OUTPUT
+      inverted: true
+binary_sensor:
+  - platform: gpio
+    name: "ETH32--IN0"
+    id: SW0
+    pin:
+      pcf8574: pcf8574_hub_in_1
+      number: 0
+      mode: INPUT
+      inverted: true
+    filters:
+      - delayed_on: 250ms      
+    on_press:
+      then:
+        - switch.toggle: LT1
+        - switch.toggle: LT2
+        - switch.toggle: LT3
+        - switch.toggle: LT4
+        - switch.toggle: LT5
+        - switch.toggle: LT6
+        - switch.toggle: LT7
+        - switch.toggle: LT8
+        - switch.toggle: LT9
+        - switch.toggle: LT10
+        - switch.toggle: LT11
+        - switch.toggle: LT12
+   
+      #  - switch.toggle: den
+  ###############
+
+ 
+  ###############
+
+
+
+  - platform: gpio
+    name: "ETH32--IN1"
+    id: SW1
+    pin:
+      pcf8574: pcf8574_hub_in_1
+      number: 1
+      mode: INPUT
+      inverted: true
+    filters:
+      - delayed_on: 250ms
+    on_press:
+      then:
+        - switch.toggle: LT2
+  - platform: gpio
+    name: "ETH32--IN2"
+    id: SW2
+    pin:
+      pcf8574: pcf8574_hub_in_1
+      number: 2
+      mode: INPUT
+      inverted: true
+    filters:
+      - delayed_on: 250ms
+    on_press:
+      then:
+        - switch.toggle: LT3  
+  - platform: gpio
+    name: "ETH32--IN2"
+    id: SW3
+    pin:
+      pcf8574: pcf8574_hub_in_1
+      number: 3
+      mode: INPUT
+      inverted: true
+    filters:
+      - delayed_on: 250ms    
+    on_press:
+      then:
+        - switch.toggle: LT4  
+sensor:
+  - platform: dht
+    pin: GPIO2
+    temperature:
+      name: "Living Room Temperature"
+      id: t_room
+    humidity:
+      name: "Living Room Humidity"
+      id: h_room
+    update_interval: 5s
+    #sensor:
+  - platform: adc   ##POT 47k
+    name: "Target temperature"
+    pin: GPIO36
+    id: t_target
+    icon: "mdi:temperature-celsius"
+    update_interval: 5s
+    attenuation: 11dB
+    # Convert potentiometer scale to °C (min=10°C, max=80°C)
+    filters:
+     - multiply: 0.00095238 # 3.9/4095, for attenuation 11db
+    unit_of_measurement: "°C"
+    on_value:
+      then:
+        - lambda: |-
+           static float x_last = 0.0;
+           if (x<x_last-0.1 || x>x_last+0.1)
+           {
+            x_last = x;
+            auto call = id(pid_climate).make_call();
+            call.set_target_temperature(x);
+            call.perform();
+           }
+  - platform: adc
+    name: "GPIO39"
+    pin: GPIO39
+    accuracy_decimals: 3
+    update_interval: 20s
+    attenuation: 11dB
+    icon: "mdi:triangle-wave"
+    unit_of_measurement: "%"
+    filters:
+     - multiply: 0.00095238 # 3.9/4095, for attenuation 11db
+  - platform: adc
+    name: "GPIO34"
+    pin: GPIO34
+    accuracy_decimals: 3
+    update_interval: 20s
+    attenuation: 11dB
+    icon: "mdi:triangle-wave"
+    unit_of_measurement: "%"
+    filters:
+     - multiply: 0.00095238 # 3.9/4095, for attenuation 11db
+  - platform: adc
+    name: "GPIO35"
+    pin: GPIO35
+    accuracy_decimals: 3
+    update_interval: 20s
+    attenuation: 11dB
+    icon: "mdi:triangle-wave"
+    unit_of_measurement: "%"
+    filters:
+     - multiply: 0.00095238 # 3.9/4095, for attenuation 11db
+
+  - platform: pid
+    name: "PID result"
+    type: RESULT
+    climate_id: pid_climate
+
+#sensor:
+ # - platform: pulse_counter
+ #   pin: GPIO4
+ #   name: "Pulse Counter"    
+#ZC: GPIO4
+#DIM: GPIO15
+#Contactor: U2_P10
+
+# Example configuration entry
+output:
+  - platform: ac_dimmer
+    id: dimmer1
+    gate_pin: GPIO33
+    zero_cross_pin:
+      number: GPIO4
+      mode:
+        input: true
+      inverted: false
+    min_power: 0.26
+    max_power: 1
+  - platform: ac_dimmer
+    id: dimmer2
+    gate_pin: GPIO32
+    zero_cross_pin:
+      number: GPIO4
+      mode:
+        input: true
+      inverted: false
+    min_power: 0.26
+    max_power: 1
+  - platform: ac_dimmer
+    id: dimmer3
+    gate_pin: GPIO15
+    zero_cross_pin:
+      number: GPIO4
+      mode:
+        input: true
+      inverted: false
+    min_power: 0.26
+    max_power: 1
+light:
+  - platform: monochromatic
+    output: dimmer2
+    gamma_correct: 0
+    name: Dimmerized GPIO32
+  - platform: monochromatic
+    output: dimmer3
+    gamma_correct: 0
+    name: Dimmerized GPIO15
+#############
+
+# Example configuration entry
+climate:
+  - platform: pid
+    id: pid_climate
+    name: "PID Climate Controller"
+    sensor: t_room
+    default_target_temperature: 34°C
+    heat_output: dimmer1
+    visual:
+      min_temperature: 18
+      max_temperature: 80
+    control_parameters:
+      kp: 0.27284
+      ki: 0.00218
+      kd: 0.00000
+      output_averaging_samples: 5      # smooth the output over 5 samples
+      derivative_averaging_samples: 5  # smooth the derivative value over 10 samples
+    deadband_parameters:
+      threshold_high: 0.5°C       # deadband within +/-0.5°C of target_temperature
+      threshold_low: -0.5°C
+button:
+  - platform: template
+    name: "PID Climate Autotune"
+    on_press:
+      - climate.pid.autotune: pid_climate
+      - climate.pid.set_control_parameters:
+          id: pid_climate
+          kp: 0.0
+          ki: 0.0
+          kd: 0.0
+
+
+

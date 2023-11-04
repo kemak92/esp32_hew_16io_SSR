@@ -47,7 +47,7 @@ pcf8574:
     i2c_id: bus_a
     address: 0x27
     pcf8575: true
-  - id: 'pcf8574_hub_in_1'  # for output channel 1-16
+  - id: 'pcf8574_hub_in_1'  # for input channel 1-16
     i2c_id: bus_a
     address: 0x20
     pcf8575: true
